@@ -18,33 +18,20 @@ window.addEventListener('DOMContentLoaded', function(){
       BABYLON.Tools.ToRadians(45),
       10.0, box.position, scene); // Rotational camera!
 
-      // const camera = new BABYLON.FollowCamera("followCam",BABYLON.Vector3.Zero(), scene);
-      // camera.lockedTarget = box;
-      // camera.radius = 10;
-      // camera.heightOffset = 0;
-      // camera.setTarget(BABYLON.Vector3.Zero());
-
-      const light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0, 10, 0), scene);
-      light.diffuse = new BABYLON.Color3(1, 0, 0);
-
-      scene.actionManager = new BABYLON.ActionManager(scene);
-      scene.actionManager.registerAction(
-        new BABYLON.ExecuteCodeAction( { trigger: BABYLON.ActionManager.OnKeyUpTrigger, parameter: " " },
-        function() {
-          light.setEnabled(!light.isEnabled());
-        }));
+      new BABYLON.SpotLight("spotLight",
+      new BABYLON.Vector3(0, 10, 0),
+      new BABYLON.Vector3(0, -1, 0),
+      BABYLON.Tools.ToRadians(45), 0.1, scene);
+      
+      
       camera.attachControl(canvas,true);
       return scene;
   }
 
   const scene = createScene();
   engine.runRenderLoop(function(){
-      // scene.getMeshByName("Box").position.z -= 0.01; moves dat black box
-      // var light = scene.getLightByName("pointLight");
-      // light.diffuse.g += 0.01; changes light color over time!
-      // light.diffuse.b += 0.01;
-
-
+      var light = scene.getLightByName("spotLight");
+      light.position.y -= 0.01; // Moving light down!
       scene.render();
   });
 });
